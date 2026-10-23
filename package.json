@@ -1,0 +1,15 @@
+{
+  "name": "moviematrix",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "npm run validate:puzzles && vite build",
+    "preview": "vite preview",
+    "validate:puzzles": "node scripts/validate-puzzles.js",
+    "test": "vitest run"
+  },
+  "dependencies": { "@vitejs/plugin-react": "latest", "vite": "latest", "react": "latest", "react-dom": "latest", "lucide-react": "^0.468.0", "posthog-js": "^1.270.0" },
+  "devDependencies": { "@testing-library/jest-dom": "^6.6.3", "@testing-library/react": "^16.1.0", "jsdom": "^25.0.1", "vitest": "latest" }
+}

@@ -1,0 +1,652 @@
+{
+  "version": 1,
+  "startDate": "2026-10-22",
+  "timezone": "Asia/Kolkata",
+  "puzzles": [
+    {
+      "date": "2026-10-22",
+      "puzzleNumber": 1,
+      "title": "Tollywood Crossword",
+      "subtitle": "10 movie clues. One interconnected grid.",
+      "rows": [
+        "#####.########",
+        "#####.########",
+        "#####.#.######",
+        "#####.#.####.#",
+        "#####.#.####.#",
+        "####..........",
+        "########.###.#",
+        "########.###.#",
+        "#####......#.#",
+        "########.#####",
+        "###.####.#####",
+        "###......#####",
+        "....##.#######",
+        "###.##.#######",
+        "###.##.#######",
+        "###.##########",
+        "###.##########",
+        "###.##########",
+        "###.##########"
+      ],
+      "answers": [
+        {
+          "number": 4,
+          "direction": "across",
+          "row": 5,
+          "col": 4,
+          "answer": "MAGADHEERA",
+          "clue": "Ram Charan stars in this reincarnation fantasy (10)"
+        },
+        {
+          "number": 5,
+          "direction": "down",
+          "row": 5,
+          "col": 8,
+          "answer": "DJTILLU",
+          "clue": "Siddhu Jonnalagadda's popular crime comedy (7)"
+        },
+        {
+          "number": 6,
+          "direction": "across",
+          "row": 8,
+          "col": 5,
+          "answer": "POKIRI",
+          "clue": "Mahesh Babu's action film directed by Puri Jagannadh (6)"
+        },
+        {
+          "number": 3,
+          "direction": "down",
+          "row": 3,
+          "col": 12,
+          "answer": "JERSEY",
+          "clue": "Nani plays a cricketer chasing his dream (6)"
+        },
+        {
+          "number": 8,
+          "direction": "across",
+          "row": 11,
+          "col": 3,
+          "answer": "ATHADU",
+          "clue": "Mahesh Babu plays a contract killer who assumes another identity (6)"
+        },
+        {
+          "number": 7,
+          "direction": "down",
+          "row": 10,
+          "col": 3,
+          "answer": "BAAHUBALI",
+          "clue": "Prabhas stars in this epic franchise (9)"
+        },
+        {
+          "number": 2,
+          "direction": "down",
+          "row": 2,
+          "col": 7,
+          "answer": "FIDA",
+          "clue": "Sai Pallavi and Varun Tej star in this romance (4)"
+        },
+        {
+          "number": 10,
+          "direction": "across",
+          "row": 12,
+          "col": 0,
+          "answer": "EEGA",
+          "clue": "Rajamouli's revenge story involving a housefly (4)"
+        },
+        {
+          "number": 9,
+          "direction": "down",
+          "row": 11,
+          "col": 6,
+          "answer": "ARYA",
+          "clue": "Allu Arjun's breakthrough romantic action film (4)"
+        },
+        {
+          "number": 1,
+          "direction": "down",
+          "row": 0,
+          "col": 5,
+          "answer": "PUSHPA",
+          "clue": "Allu Arjun's red-sandalwood action blockbuster (6)"
+        }
+      ]
+    },
+    {
+      "date": "2026-10-23",
+      "puzzleNumber": 2,
+      "title": "Tollywood Crossword",
+      "subtitle": "10 easy clues. One interconnected grid.",
+      "rows": [
+        "#.##########.#",
+        "#.###.#.......",
+        "#.#.#.######.#",
+        "..............",
+        "#.#.#.######.#",
+        "#.##......##.#",
+        "#####.######.#",
+        "#.........##.#",
+        "#####.####...#",
+        "##......####.#"
+      ],
+      "answers": [
+        {
+          "number": 1,
+          "direction": "down",
+          "row": 0,
+          "col": 1,
+          "answer": "MAHESH",
+          "clue": "First name of the superstar who acted in Pokiri and Srimanthudu (6)"
+        },
+        {
+          "number": 2,
+          "direction": "down",
+          "row": 0,
+          "col": 12,
+          "answer": "MAGADHEERA",
+          "clue": "Ram Charan's reincarnation action film directed by Rajamouli (10)"
+        },
+        {
+          "number": 3,
+          "direction": "down",
+          "row": 1,
+          "col": 5,
+          "answer": "BAAHUBALI",
+          "clue": "Epic film series starring Prabhas, directed by Rajamouli (9)"
+        },
+        {
+          "number": 4,
+          "direction": "across",
+          "row": 1,
+          "col": 7,
+          "answer": "PRABHAS",
+          "clue": "Baahubali star who played the lead role in Salaar (7)"
+        },
+        {
+          "number": 5,
+          "direction": "down",
+          "row": 2,
+          "col": 3,
+          "answer": "NTR",
+          "clue": "Short name commonly used for Jr Nandamuri Taraka Rama Rao (3)"
+        },
+        {
+          "number": 6,
+          "direction": "across",
+          "row": 3,
+          "col": 0,
+          "answer": "GEETHAGOVINDAM",
+          "clue": "Vijay Deverakonda and Rashmika Mandanna's romantic hit (14)"
+        },
+        {
+          "number": 7,
+          "direction": "across",
+          "row": 5,
+          "col": 4,
+          "answer": "PUSHPA",
+          "clue": "Allu Arjun's hit film about a red-sanders smuggler (6)"
+        },
+        {
+          "number": 8,
+          "direction": "across",
+          "row": 7,
+          "col": 1,
+          "answer": "ALLUARJUN",
+          "clue": "Actor who played Pushpa Raj and is known for his signature dance moves (9)"
+        },
+        {
+          "number": 9,
+          "direction": "across",
+          "row": 8,
+          "col": 10,
+          "answer": "RRR",
+          "clue": "Rajamouli's movie starring Ram Charan and Jr NTR (3)"
+        },
+        {
+          "number": 10,
+          "direction": "across",
+          "row": 9,
+          "col": 2,
+          "answer": "POKIRI",
+          "clue": "Mahesh Babu's blockbuster with the famous dialogue 'Okkasari commit ayithe...' (6)"
+        }
+      ]
+    },
+    {
+      "date": "2026-10-24",
+      "puzzleNumber": 3,
+      "title": "Tollywood Crossword",
+      "subtitle": "10 tough clues. One interconnected grid.",
+      "rows": [
+        "############.#",
+        "##########.#.#",
+        "##.........#.#",
+        "##########.#.#",
+        "##########.#.#",
+        "##########.#.#",
+        "##########.#.#",
+        "#####.####.#.#",
+        "###........#.#",
+        ".####.######.#",
+        ".####.####.#.#",
+        ".###..........",
+        ".####.####.###",
+        "......####.###",
+        ".####.#....###",
+        ".####.####.###",
+        ".####.####.###",
+        ".####.####.###",
+        ".####.####.###"
+      ],
+      "answers": [
+        {
+          "number": 1,
+          "direction": "down",
+          "row": 0,
+          "col": 12,
+          "answer": "RANGASTHALAM",
+          "clue": "1985-set village drama in which a hearing-impaired motor-man takes on a corrupt president (12)"
+        },
+        {
+          "number": 2,
+          "direction": "down",
+          "row": 1,
+          "col": 10,
+          "answer": "KATTAPPA",
+          "clue": "Sathyaraj's loyal slave-warrior in?(8)"
+        },
+        {
+          "number": 3,
+          "direction": "across",
+          "row": 2,
+          "col": 2,
+          "answer": "ANNAPURNA",
+          "clue": "Hyderabad studios founded by A. Nageswara Rao (9)"
+        },
+        {
+          "number": 4,
+          "direction": "down",
+          "row": 7,
+          "col": 5,
+          "answer": "VIKRAMARKUDU",
+          "clue": "Ravi Teja plays a cop and his thief lookalike in 2006(12)"
+        },
+        {
+          "number": 5,
+          "direction": "across",
+          "row": 8,
+          "col": 3,
+          "answer": "CHIRUTHA",
+          "clue": "Ram Charan's 2007 debut directed by Puri Jagannadh (8)"
+        },
+        {
+          "number": 6,
+          "direction": "down",
+          "row": 9,
+          "col": 0,
+          "answer": "MAHISHMATI",
+          "clue": "Kingdom ruled by Bhallaladeva in Baahubali (10)"
+        },
+        {
+          "number": 7,
+          "direction": "down",
+          "row": 10,
+          "col": 10,
+          "answer": "NANDAMURI",
+          "clue": "Dynasty surname of N. T. Rama Rao (9)"
+        },
+        {
+          "number": 8,
+          "direction": "across",
+          "row": 11,
+          "col": 4,
+          "answer": "MANISHARMA",
+          "clue": "'Melody Brahma' who scored the songs of Okkadu (10)"
+        },
+        {
+          "number": 9,
+          "direction": "across",
+          "row": 13,
+          "col": 0,
+          "answer": "SIMMBA",
+          "clue": "Ranveer Singh's 2018 Hindi remake of NTR Jr.'s Temper (6)"
+        },
+        {
+          "number": 10,
+          "direction": "across",
+          "row": 14,
+          "col": 7,
+          "answer": "SIVA",
+          "clue": "Nagarjuna's 1989 campus-gangster film that launched Ram Gopal Varma (spelled with an S) (4)"
+        }
+      ]
+    },
+    {
+      "date": "2026-10-25",
+      "puzzleNumber": 4,
+      "title": "Tollywood Crossword",
+      "subtitle": "10 tough clues. One interconnected grid.",
+      "rows": [
+        "############.#",
+        "############.#",
+        "########......",
+        "#.##########.#",
+        "#.##########.#",
+        "#.##########.#",
+        "#.###.####.#.#",
+        "......####.#.#",
+        "#.###.####.#.#",
+        "###......#.#.#",
+        "#####.####.#.#",
+        "#####.##.#.#.#",
+        "###..........#",
+        "########.#.###",
+        "########.#.###",
+        "########.#####",
+        "########.#####",
+        "#...........##",
+        "##############"
+      ],
+      "answers": [
+        {
+          "number": 1,
+          "direction": "down",
+          "row": 0,
+          "col": 12,
+          "answer": "PELLICHOOPULU",
+          "clue": "Tharun Bhascker's 2016 sleeper hit that won a National Award for Best Telugu Film (13)"
+        },
+        {
+          "number": 2,
+          "direction": "across",
+          "row": 2,
+          "col": 8,
+          "answer": "GHILLI",
+          "clue": "Vijay's 2004 Tamil remake of Mahesh Babu's Okkadu (6)"
+        },
+        {
+          "number": 3,
+          "direction": "down",
+          "row": 3,
+          "col": 1,
+          "answer": "TEMPER",
+          "clue": "Puri Jagannadh's 2015 film with NTR Jr. as a corrupt cop turned honest (6)"
+        },
+        {
+          "number": 4,
+          "direction": "down",
+          "row": 6,
+          "col": 5,
+          "answer": "KAMMULA",
+          "clue": "Sekhar ___, director of Anand, Godavari and Happy Days (7)"
+        },
+        {
+          "number": 5,
+          "direction": "down",
+          "row": 6,
+          "col": 10,
+          "answer": "SEETIMAAR",
+          "clue": "Allu Arjun-Pooja Hegde dance hit from DJ Duvvada Jagannadham (two words, joined) (9)"
+        },
+        {
+          "number": 6,
+          "direction": "across",
+          "row": 7,
+          "col": 0,
+          "answer": "GEETHA",
+          "clue": "Allu Aravind's banner that produced Magadheera (6)"
+        },
+        {
+          "number": 7,
+          "direction": "across",
+          "row": 9,
+          "col": 3,
+          "answer": "RAMOJI",
+          "clue": "First name of the founder of Hyderabad's giant film city (6)"
+        },
+        {
+          "number": 8,
+          "direction": "down",
+          "row": 11,
+          "col": 8,
+          "answer": "ANIRUDH",
+          "clue": "Tamil composer who scored two Nani films, Gang Leader and Jersey (7)"
+        },
+        {
+          "number": 9,
+          "direction": "across",
+          "row": 12,
+          "col": 3,
+          "answer": "NAATUNAATU",
+          "clue": "Oscar-winning dance number from RRR (two words, joined) (10)"
+        },
+        {
+          "number": 10,
+          "direction": "across",
+          "row": 17,
+          "col": 1,
+          "answer": "SRIMANTHUDU",
+          "clue": "Film in which Mahesh Babu adopts the village of Devarakota (11)"
+        }
+      ]
+    },
+    {
+      "date": "2026-10-26",
+      "puzzleNumber": 5,
+      "title": "Tollywood Crossword",
+      "subtitle": "10 tough clues. One interconnected grid.",
+      "rows": [
+        "#####.########",
+        "#####.########",
+        "#####.#####.##",
+        "#####.#####.##",
+        "#####.##.##.##",
+        "#####.##......",
+        "#####.##.##.##",
+        "##.##.##.##.#.",
+        "##.##.##.##.#.",
+        ".#.##.##.##.#.",
+        ".#.##.##.##.#.",
+        ".#.##.##.####.",
+        ".........####.",
+        ".#.#####.####.",
+        ".##...........",
+        ".#######.#####",
+        ".#..........##",
+        "########.#####",
+        "##############"
+      ],
+      "answers": [
+        {
+          "number": 1,
+          "direction": "down",
+          "row": 0,
+          "col": 5,
+          "answer": "DEVISRIPRASAD",
+          "clue": "'Rockstar' composer who won a National Award for Pushpa: The Rise (13)"
+        },
+        {
+          "number": 2,
+          "direction": "down",
+          "row": 2,
+          "col": 11,
+          "answer": "KEERAVANI",
+          "clue": "Composer who accepted the Academy Award for the RRR song 'Naatu Naatu' (9)"
+        },
+        {
+          "number": 3,
+          "direction": "down",
+          "row": 4,
+          "col": 8,
+          "answer": "SAGARASANGAMAM",
+          "clue": "1983 K. Viswanath dance drama with Kamal Haasan and Jayaprada (14)"
+        },
+        {
+          "number": 4,
+          "direction": "across",
+          "row": 5,
+          "col": 8,
+          "answer": "ASURAN",
+          "clue": "Dhanush's Tamil film remade as Venkatesh's Narappa (6)"
+        },
+        {
+          "number": 5,
+          "direction": "down",
+          "row": 7,
+          "col": 2,
+          "answer": "KVREDDY",
+          "clue": "Initials and surname (no spaces) of the director of Pathala Bhairavi and Mayabazar (7)"
+        },
+        {
+          "number": 6,
+          "direction": "down",
+          "row": 7,
+          "col": 13,
+          "answer": "GANGOTRI",
+          "clue": "Allu Arjun's 2003 hero debut directed by K. Raghavendra Rao (8)"
+        },
+        {
+          "number": 7,
+          "direction": "down",
+          "row": 9,
+          "col": 0,
+          "answer": "DEVADASU",
+          "clue": "Title shared by ANR's 1953 tragedy and Ram Pothineni's 2006 debut (8)"
+        },
+        {
+          "number": 8,
+          "direction": "across",
+          "row": 12,
+          "col": 0,
+          "answer": "ANDHADHUN",
+          "clue": "Ayushmann Khurrana thriller remade as Nithiin's Maestro (9)"
+        },
+        {
+          "number": 9,
+          "direction": "across",
+          "row": 14,
+          "col": 3,
+          "answer": "RAMALAKSHMI",
+          "clue": "Samantha's character in Rangasthalam (one word) (11)"
+        },
+        {
+          "number": 10,
+          "direction": "across",
+          "row": 16,
+          "col": 2,
+          "answer": "CHARULATHA",
+          "clue": "Shruti Haasan's role in Srimanthudu (10)"
+        }
+      ]
+    },
+    {
+      "date": "2026-10-27",
+      "puzzleNumber": 6,
+      "title": "Tollywood Crossword",
+      "subtitle": "10 tough clues. One interconnected grid.",
+      "rows": [
+        "#.#####.######",
+        "#.#.........##",
+        "#.#####.##.###",
+        "#.#####.##.###",
+        "#.#####.##.###",
+        "#.#####.##.###",
+        "#.##.##.##.###",
+        "#.##.##.##.###",
+        "#.##.##.#.####",
+        "..........####",
+        "####.##.#.####",
+        "####.##.#.#.##",
+        "#########.#.##",
+        "######........",
+        "###########.##",
+        "##...........#",
+        "###########.##",
+        "###########.##",
+        "##############"
+      ],
+      "answers": [
+        {
+          "number": 1,
+          "direction": "down",
+          "row": 0,
+          "col": 1,
+          "answer": "BOMMARILLU",
+          "clue": "2006 family drama where Prakash Raj's over-protective father frustrates Siddharth (10)"
+        },
+        {
+          "number": 2,
+          "direction": "down",
+          "row": 0,
+          "col": 7,
+          "answer": "KRISHNAVAMSI",
+          "clue": "Director of Gulabi, Murari and Khadgam (12)"
+        },
+        {
+          "number": 3,
+          "direction": "across",
+          "row": 1,
+          "col": 3,
+          "answer": "OBULREDDY",
+          "clue": "Prakash Raj's villain in Mahesh Babu's kabaddi film (9)"
+        },
+        {
+          "number": 4,
+          "direction": "down",
+          "row": 1,
+          "col": 10,
+          "answer": "DABANGG",
+          "clue": "Salman Khan's 2010 Hindi hit that Pawan Kalyan's Gabbar Singh remade (7)"
+        },
+        {
+          "number": 5,
+          "direction": "down",
+          "row": 6,
+          "col": 4,
+          "answer": "TULASI",
+          "clue": "Manju Bhargavi's dancer in Sankarabharanam (6)"
+        },
+        {
+          "number": 6,
+          "direction": "down",
+          "row": 8,
+          "col": 9,
+          "answer": "DASARI",
+          "clue": "Surname of the 'Darsaka Ratna' who directed Meghasandesam (1982) (6)"
+        },
+        {
+          "number": 7,
+          "direction": "across",
+          "row": 9,
+          "col": 0,
+          "answer": "BUTTABOMMA",
+          "clue": "Armaan Malik's chartbuster from Ala Vaikunthapurramuloo (two words, joined) (10)"
+        },
+        {
+          "number": 8,
+          "direction": "down",
+          "row": 11,
+          "col": 11,
+          "answer": "PREETHI",
+          "clue": "Shalini Pandey's role in Arjun Reddy (7)"
+        },
+        {
+          "number": 9,
+          "direction": "across",
+          "row": 13,
+          "col": 6,
+          "answer": "AKKINENI",
+          "clue": "Dynasty surname of ANR, Nagarjuna and Naga Chaitanya (8)"
+        },
+        {
+          "number": 10,
+          "direction": "across",
+          "row": 15,
+          "col": 2,
+          "answer": "COLOURPHOTO",
+          "clue": "Suhas-starrer that won Best Telugu Film at the 68th National Awards (11)"
+        }
+      ]
+    }
+  ]
+}

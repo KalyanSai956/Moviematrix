@@ -1,0 +1,99 @@
+# MovieMatrix
+
+A static React + JavaScript daily Tollywood crossword hosted on Vercel. No player accounts or game backend are required. Daily puzzles live in `content/puzzles.json`.
+
+## Run locally
+
+```bash
+npm install
+cp .env.example .env.local
+npm run dev
+```
+
+The game works without PostHog configuration. Analytics events are sent only after a visitor explicitly allows analytics and valid PostHog configuration is present.
+
+## Stage 1: PostHog analytics setup
+
+1. Create a PostHog project at [posthog.com](https://posthog.com/) and choose the appropriate data region for your audience and obligations.
+2. In PostHog project settings, copy the **project API key** (not a personal or privileged API key) and the project's ingest host.
+3. Put them in `.env.local`:
+
+   ```env
+   VITE_POSTHOG_KEY=phc_your_project_key
+   VITE_POSTHOG_HOST=https://us.i.posthog.com
+   ```
+
+   Use the exact host shown by PostHog for your project. EU projects commonly use `https://eu.i.posthog.com`. These are public browser settings, not secrets. Never put a privileged PostHog API key in a `VITE_` variable.
+4. Restart Vite after changing environment variables. Deploy the same variables in Vercel → Project Settings → Environment Variables, for Preview and Production as appropriate, then redeploy.
+5. On first visit, choose **Allow analytics** to start sending events or **Reject analytics** to keep custom analytics off. Change the selection using **Privacy settings** in the footer.
+6. Verify events in PostHog's live events/activity view. Use a private browser session and test both consent choices. Do not use real visitor metrics for test runs.
+
+## Events tracked
+
+All custom events are gated by explicit consent and PostHog configuration. Autocapture, automatic pageviews, session recording and person profiles are disabled in the SDK configuration.
+
+| Event | Meaning | Properties |
+|---|---|---|
+| `game_page_viewed` | Initial game page load after consent | `page` |
+| `play_clicked` | Play button pressed | `puzzle_date`, `puzzle_number` |
+| `countdown_completed` | Five-second countdown finished | `puzzle_date`, `puzzle_number` |
+| `crossword_started` | Crossword becomes playable | `puzzle_date`, `puzzle_number` |
+| `rules_viewed` | First-visit rules displayed | `puzzle_date`, `puzzle_number`, `placement` |
+| `clue_selected` | Player selects a clue/cell | `puzzle_date`, `clue_number`, `direction` |
+| `check_blocked_incomplete` | Submission blocked because answers are missing | `puzzle_date` |
+| `check_clicked` | Complete crossword submitted | `puzzle_date`, `puzzle_number` |
+| `puzzle_submitted` | Final result recorded | `puzzle_date`, `puzzle_number`, `correct_answers`, `total_answers`, `duration_seconds` |
+| `puzzle_won` / `puzzle_lost` | Final outcome | Same aggregate outcome properties; no answer text |
+| `whatsapp_share_clicked` | WhatsApp share link clicked | `puzzle_date`, `puzzle_number`, `outcome` |
+| `instagram_clicked` | Instagram link clicked | `placement`, `puzzle_date` |
+
+No names, email addresses, phone numbers, typed letters or crossword answer text are intentionally sent. Analytics identifiers are anonymous browser identifiers and do not constitute a player account. Browser-based analytics cannot reliably deduplicate the same person across devices or after storage is cleared.
+
+## Create external PostHog dashboards
+
+Create these insights from the events above, then add them to a PostHog dashboard:
+
+1. **Daily traffic:** unique visitors / sessions by day. Use PostHog's web analytics or pageview insights for traffic; the custom `game_page_viewed` event is emitted only after consent.
+2. **Game funnel:** `play_clicked` → `crossword_started` → `puzzle_submitted` → `puzzle_won`.
+3. **Puzzle difficulty:** `puzzle_won` and `puzzle_lost` by `puzzle_number` or `puzzle_date`; compare win rate and median `duration_seconds`.
+4. **Sharing:** `whatsapp_share_clicked` and `instagram_clicked` by day.
+5. **Retention:** use PostHog retention insights with returning activity, and interpret results as anonymous-browser retention rather than verified people.
+
+PostHog interface labels may change. Build insights from actual received events and check their property names before saving dashboards. No analytics data is fabricated by the app.
+
+## Privacy controls
+
+- The consent dialog offers Allow analytics and Reject analytics; the saved choice can be changed through **Privacy settings** in the footer.
+- Analytics is not initialized until consent is accepted. Events are not queued before consent.
+- `autocapture`, automatic pageviews, pageleave capture, session recording and person profiles are disabled.
+- `respect_dnt` is enabled. PostHog custom events are gated by the consent choice and configuration.
+- The `public/privacy.html` page describes this setup. Review it against your actual PostHog region, settings, retention and applicable law before public launch; it is a starter notice, not legal advice.
+- If someone rejects analytics after previously accepting it, new capture is opted out. For stricter deletion semantics, you may additionally clear PostHog's stored browser persistence as part of your reviewed privacy policy implementation.
+
+## Update daily puzzles
+
+Edit only `content/puzzles.json`. Add one object per date. The grid is explicit: `rows` is a rectangular array; `#` means blocked and `.` means playable. Each answer requires `number`, `direction` (`across` or `down`), zero-based `row` and `col`, `answer` (A–Z only), and `clue`.
+
+Run:
+
+```bash
+npm run validate:puzzles
+npm test
+npm run build
+```
+
+The build runs puzzle validation automatically. Commit and push to GitHub; Vercel deploys the production branch.
+
+## Static-only limitations
+
+- Puzzle answers ship to browsers in `content/puzzles.json` and can be inspected.
+- Local game statistics are browser-specific and can be cleared or edited.
+- Analytics visitors are estimates based on anonymous browser identifiers, not authenticated people.
+- This stage implements analytics capture and external PostHog setup only. It does **not** include an in-app `/admin` dashboard or serverless analytics proxy.
+
+
+## Daily crossword content contract
+
+Edit only `content/puzzles.json` to publish a daily puzzle. Keep `version: 1` and `timezone: "Asia/Kolkata"`. Each puzzle's `rows` is the authoritative rectangular grid: `.` is an open cell and `#` is a blocked cell. `answers` entries use zero-based `row` and `col`, `direction` (`across` or `down`), uppercase A–Z `answer`, `clue`, and the standard crossword `number` for that starting cell.
+
+Before publishing, run `npm run validate:puzzles`. Validation rejects malformed grids, answers that do not fit their open slots, mismatched intersections, incorrect clue numbering, uncovered open cells, and question lists that have no Across/Down crossing structure. `npm run build` runs this validation before Vite builds. The current bundled October 22 content is a list of isolated Across entries, not a valid crossword, and therefore intentionally fails strict validation until replaced with a genuine intersecting grid.

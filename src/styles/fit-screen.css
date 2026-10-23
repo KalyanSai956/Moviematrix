@@ -1,0 +1,307 @@
+/* fit-screen.css — import AFTER your main stylesheet.
+   One screen, no page scroll, centered. Works from 320px phones to 4K desktops.
+
+   How the game screen is sized
+   ----------------------------
+   .board-panel is a size container. The grid cell size is derived from the room
+   that is actually left once the clue bar, buttons and keyboard have taken their
+   fixed heights, so ANY puzzle shape (19x14, 10x19, 5x5 ...) gets the biggest
+   cells that fit. If that would make cells smaller than --min-cell, cells stop
+   shrinking and the grid scrolls inside its own window instead (the selected
+   cell is kept in view by Crossword.jsx). */
+
+:root{
+  --pad:14px;
+  --gap:8px;
+  --clue-h:62px;              /* active clue bar */
+  --ctrl-h:40px;              /* Switch / Clear / Check row */
+  --kh:clamp(34px,5.2dvh,46px); /* on-screen key height */
+  --kg:5px;                   /* gap between keys */
+  --min-cell:22px;            /* smallest playable cell before the grid scrolls */
+  --max-cell:60px;
+}
+
+/* ---------- Lock the page ---------- */
+html,body,#root{height:100%;margin:0;overflow:hidden;overscroll-behavior:none}
+body{position:fixed;inset:0;width:100%;min-height:0;touch-action:manipulation;
+  -webkit-tap-highlight-color:transparent;-webkit-text-size-adjust:100%}
+#root{height:100vh;height:100dvh}
+button{touch-action:manipulation}
+
+.app-shell{
+  height:100vh;height:100dvh;min-height:0;max-width:1280px;margin:0 auto;
+  padding:
+    max(var(--pad),env(safe-area-inset-top))
+    max(var(--pad),env(safe-area-inset-right))
+    max(var(--pad),env(safe-area-inset-bottom))
+    max(var(--pad),env(safe-area-inset-left));
+  display:flex;flex-direction:column;overflow:hidden;
+}
+/* if a top bar / footer is rendered, keep them slim so the board gets the room */
+.topbar{flex:none;height:clamp(44px,8dvh,72px)}
+.site-footer{flex:none;min-height:0;padding:6px 0}
+main{flex:1;width:100%;min-height:0;min-width:0;display:flex;align-items:center;justify-content:center}
+main>section,
+main>section[class]{   /* [class] beats the padding set on .game-screen / .result-screen etc. */
+  width:100%;height:100%;max-height:100%;min-height:0;margin:0 auto;padding:0;overflow:hidden;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;
+}
+.state-screen,.result-screen,.answers-screen{max-width:760px}
+
+/* ---------- Home ---------- */
+.hero{display:flex;flex:1;min-height:0;max-width:none;padding:0}
+.hero-copy{display:flex;flex-direction:column;align-items:center;max-width:640px}
+.hero h1{font-size:clamp(40px,min(14vw,10dvh),84px);line-height:1.04;letter-spacing:-.05em;margin:0 0 clamp(14px,3dvh,26px)}
+.eyebrow{justify-content:center;margin-bottom:clamp(10px,2dvh,18px)}
+.hero-actions{display:flex;flex-direction:column;align-items:center;gap:10px}
+
+/* ---------- Loading / coming soon ---------- */
+.loader-emblem,.result-icon{
+  width:clamp(46px,8dvh,74px);height:clamp(46px,8dvh,74px);
+  margin:0 auto clamp(8px,1.6dvh,20px);border-radius:clamp(14px,2.6dvh,22px);
+}
+.countdown-number{font-size:clamp(64px,16dvh,96px);margin:clamp(8px,2dvh,24px) 0}
+.state-screen h1,.state-screen h2{font-size:clamp(22px,4.4dvh,40px);letter-spacing:-.04em;margin-bottom:8px}
+.loading-track{margin-top:clamp(16px,3dvh,32px)}
+
+/* =====================================================================
+   GAME
+   ===================================================================== */
+.game-screen{max-width:none;justify-content:flex-start}
+
+.section-heading{
+  flex:none;flex-direction:column;align-items:center;text-align:center;
+  gap:4px;height:auto;margin:0 0 var(--gap);padding:0;justify-content:center;
+}
+.section-heading .eyebrow{margin:0}
+.section-heading h1{font-size:clamp(18px,3.2dvh,30px);line-height:1.1;letter-spacing:-.04em;margin:0}
+.section-heading .muted{display:none}
+.timer-chip{align-self:center;padding:5px 11px}
+
+/* two columns on desktop: board | clues */
+.game-layout{
+  flex:1;width:100%;min-height:0;min-width:0;
+  display:grid;
+  grid-template-columns:minmax(0,clamp(400px,46vw,820px)) clamp(290px,28vw,380px);
+  grid-template-rows:minmax(0,1fr);
+  gap:clamp(16px,3vw,40px);
+  justify-content:center;align-items:stretch;
+}
+
+/* ---------- Board ---------- */
+.board-panel{
+  --cols:1;--rows:1;               /* real values come from the JSX inline style */
+  --gg:2px;                        /* gap between cells */
+  --gp:3px;                        /* padding inside the grid frame */
+  --side-w:0px;                    /* sidebar width (landscape phones only) */
+  --kb-h:calc(var(--kh)*3 + var(--kg)*2);
+  --stack:calc(var(--clue-h) + var(--ctrl-h) + var(--kb-h) + var(--gap)*3);
+  --aw:calc(100cqw - var(--side-w));          /* room for the grid: width  */
+  --ah:calc(100cqh - var(--stack));           /* room for the grid: height */
+  --cell:clamp(
+    var(--min-cell),
+    min(
+      (var(--aw) - var(--gp)*2 - 2px - (var(--cols) - 1)*var(--gg)) / var(--cols),
+      (var(--ah) - var(--gp)*2 - 2px - (var(--rows) - 1)*var(--gg)) / var(--rows)
+    ),
+    var(--max-cell)
+  );
+  --gw:calc(var(--cell)*var(--cols) + (var(--cols) - 1)*var(--gg) + var(--gp)*2 + 2px);
+  --gh:calc(var(--cell)*var(--rows) + (var(--rows) - 1)*var(--gg) + var(--gp)*2 + 2px);
+  --bw:min(100cqw,max(var(--gw),320px));     /* clue bar / buttons / keys width */
+
+  container-type:size;
+  position:relative;min-width:0;min-height:0;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:var(--gap);
+}
+@supports not (width:1cqw){
+  .board-panel{--cell:22px;--gw:100%;--gh:auto;--aw:100%;--ah:auto;--bw:100%;container-type:normal}
+}
+
+/* grid window: exactly as big as the grid, or scrolls if the grid is bigger than the space */
+.grid-wrap{position:relative;flex:none;width:min(var(--aw),var(--gw));height:min(var(--ah),var(--gh))}
+.grid-viewport{
+  width:100%;height:100%;display:flex;overflow:auto;border-radius:8px;
+  scrollbar-width:none;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;
+}
+.grid-viewport::-webkit-scrollbar{display:none}
+
+.crossword-grid{
+  flex:none;margin:auto;max-width:none;box-sizing:border-box;
+  width:var(--gw);height:var(--gh);padding:var(--gp);gap:var(--gg);
+  display:grid;grid-template-columns:repeat(var(--cols),var(--cell));grid-auto-rows:var(--cell);
+  container-type:normal;
+}
+.cell{
+  width:100%;height:100%;aspect-ratio:auto;min-width:0;min-height:0;
+  display:grid;place-items:center;line-height:1;
+  font-size:clamp(11px,calc(var(--cell)*.54),32px);
+  -webkit-user-select:none;user-select:none;
+}
+.cell-number{font-size:clamp(7px,calc(var(--cell)*.27),11px);top:calc(var(--cell)*.05);left:calc(var(--cell)*.09)}
+
+/* clue bar with previous / next */
+.active-clue{
+  flex:none;width:var(--bw);height:var(--clue-h);min-height:0;margin:0;padding:6px;
+  flex-direction:row;align-items:center;gap:6px;overflow:hidden;
+}
+.active-clue-text{flex:1;min-width:0;display:flex;flex-direction:column;justify-content:center;gap:3px;text-align:center}
+.active-clue strong{
+  font-size:clamp(12.5px,3.4vw,15px);line-height:1.3;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+}
+.clue-nav{
+  flex:none;width:36px;height:36px;display:grid;place-items:center;border:0;border-radius:9px;
+  background:#0d12301f;color:#0d1230;font-size:26px;line-height:1;padding:0 0 3px;
+}
+.clue-nav:hover{background:#0d123036}
+.clue-nav:focus-visible{outline-color:#0d1230}
+
+.game-controls{flex:none;width:var(--bw);height:var(--ctrl-h);max-width:none;margin:0;flex-wrap:nowrap;gap:6px}
+.game-controls button{flex:1 1 auto;min-width:0;height:var(--ctrl-h);padding:0 10px;font-size:11px;white-space:nowrap}
+
+/* QWERTY keyboard */
+.virtual-keyboard{
+  flex:none;width:var(--bw);max-width:none;margin:0;
+  display:flex;flex-direction:column;flex-wrap:nowrap;gap:var(--kg);
+}
+.kb-row{display:flex;gap:var(--kg);justify-content:center}
+.kb-row button{
+  flex:1 1 0;min-width:0;height:var(--kh);padding:0;
+  -webkit-user-select:none;user-select:none;
+}
+.kb-row .key-wide{flex:2 1 0}
+.kb-gap{flex:0 1 0;min-width:0}
+
+/* floating validation message (doesn't push layout) */
+.grid-wrap .notice{
+  position:absolute;z-index:5;left:50%;top:8px;transform:translateX(-50%);
+  width:max-content;max-width:calc(100% - 16px);margin:0;padding:8px 12px;
+  background:#292316;border:1px solid #5b4c2c;border-radius:8px;
+  font-size:11px;line-height:1.4;box-shadow:0 10px 30px #0008;
+}
+.fair-play-note{flex:none;margin:var(--gap) 0 0;font-size:10px;line-height:1.3}
+.invalid-panel{align-items:stretch;justify-content:flex-start;text-align:left;overflow:auto}
+
+/* ---------- Clues side panel (desktop / tablet landscape) ---------- */
+.clues-panel{
+  display:flex;flex-direction:column;gap:14px;align-self:stretch;min-height:0;height:100%;
+  overflow-y:auto;scrollbar-width:thin;scrollbar-color:#2a3150 transparent;text-align:left;
+  padding:14px 10px 14px 14px;border:1px solid #232a47;border-radius:14px;background:#0d1124;
+}
+.clue-column h3{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:2px 0 8px 2px}
+.clue{padding:8px 10px;font-size:13px;line-height:1.45;margin-bottom:2px}
+
+/* ---------- Result ---------- */
+.result-screen h1{font-size:clamp(22px,4.4dvh,40px);letter-spacing:-.04em;margin:0 0 6px}
+.score-card{width:100%;max-width:340px;margin:clamp(10px,2dvh,26px) auto;padding:clamp(12px,2dvh,22px);gap:4px}
+.score-card strong{font-size:clamp(38px,8dvh,62px)}
+.stats-grid{width:100%;max-width:520px;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:0 auto clamp(10px,2dvh,22px)}
+.stat{padding:clamp(8px,1.6dvh,16px) 4px;gap:4px}
+.stat strong{font-size:clamp(15px,2.6dvh,24px)}
+.stat span{font-size:9.5px}
+.result-actions{gap:8px}
+.result-actions button{height:40px;padding:0 16px}
+.next-puzzle{margin-top:clamp(10px,2dvh,26px);padding-top:clamp(8px,1.6dvh,18px);gap:18px}
+.next-puzzle strong{font-size:clamp(18px,3dvh,24px)}
+.instagram-result-link{margin-top:clamp(8px,1.6dvh,16px);display:inline-flex;align-items:center;gap:7px;
+  color:#c5cbed;text-decoration:none;font-size:12px}
+
+/* ---------- Answers ---------- */
+.answers-screen h1{font-size:clamp(22px,4dvh,36px);letter-spacing:-.04em;margin-bottom:4px}
+.answer-list{
+  width:100%;margin:12px 0;text-align:left;
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 28px;
+  max-height:calc(100dvh - 230px);overflow-y:auto;scrollbar-width:none;
+}
+.answer-list::-webkit-scrollbar{display:none}
+.answer-row{padding:8px 0;gap:10px}
+.answer-row>div{min-width:0}
+.answer-row>span{min-width:56px;font-size:9px}
+.answer-row strong{font-size:13px}
+.answer-row p{font-size:10px;margin:2px 0 0;line-height:1.3}
+
+/* ---------- Modals scroll inside themselves ---------- */
+.modal-backdrop,.consent-backdrop{overflow:hidden}
+.modal,.consent-card{max-height:calc(100dvh - 32px);overflow-y:auto}
+
+/* =====================================================================
+   RESPONSIVE
+   ===================================================================== */
+
+/* Desktop with a real keyboard + mouse: the on-screen keyboard is redundant,
+   so the grid gets its height back. */
+@media (hover:hover) and (pointer:fine) and (min-width:851px){
+  .virtual-keyboard{display:none}
+  .board-panel{--kb-h:0px;--stack:calc(var(--clue-h) + var(--ctrl-h) + var(--gap)*2)}
+  .game-controls button{font-size:12px}
+}
+
+/* Tablet portrait / phones: single column, clue list replaced by prev/next bar */
+@media (max-width:850px){
+  :root{--pad:12px}
+  .game-layout{grid-template-columns:minmax(0,1fr);gap:0}
+  .clues-panel,.fair-play-note{display:none}
+  .answer-list{grid-template-columns:1fr}
+  .answer-row p{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+}
+
+/* Phones */
+@media (max-width:520px){
+  :root{--pad:10px;--clue-h:60px;--ctrl-h:38px;--kg:4px;--min-cell:21px}
+  .active-clue strong{font-size:clamp(12px,3.5vw,14px)}
+  .clue-nav{width:32px;height:34px}
+  .game-controls{gap:5px}
+  .game-controls button{padding:0 6px;font-size:10.5px}
+  .kb-row button{font-size:12px}
+  .stats-grid{gap:5px}
+  .stat span{font-size:9px}
+  .next-puzzle p{display:none}
+  .section-heading .eyebrow{display:none}
+  .section-heading h1{font-size:clamp(18px,3.1dvh,24px)}
+}
+@media (max-width:360px){
+  .game-controls button{font-size:9.5px;padding:0 4px}
+  .stat strong{font-size:14px}
+}
+
+/* Short screens (small phones, browser bars): give height back to the grid */
+@media (max-height:760px){
+  .section-heading .eyebrow{display:none}
+  .fair-play-note{display:none}
+}
+@media (max-height:700px){
+  :root{--clue-h:54px;--ctrl-h:36px;--kh:clamp(31px,5dvh,40px)}
+  .timer-chip{display:none}
+}
+@media (max-height:640px){
+  .section-heading h1{font-size:18px}
+  .result-icon,.next-puzzle p{display:none}
+  .site-footer{display:none}
+}
+@media (max-height:520px){
+  .stats-grid{display:none}
+}
+
+/* Landscape phones: board on the left, clue + buttons + keys on the right */
+@media (orientation:landscape) and (max-height:560px) and (max-width:1100px){
+  :root{--pad:8px;--gap:6px;--kh:clamp(28px,9dvh,38px);--kg:3px;--clue-h:58px;--ctrl-h:34px}
+  .section-heading,.fair-play-note,.clues-panel,.topbar,.site-footer{display:none}
+  .game-layout{grid-template-columns:minmax(0,1fr);gap:0}
+  .board-panel{
+    --side-w:calc(clamp(220px,40vw,300px) + var(--gap)*2);
+    --ah:100cqh;
+    --bw:100%;
+    display:grid;grid-template-columns:minmax(0,1fr) clamp(220px,40vw,300px);
+    grid-template-rows:auto auto minmax(0,1fr);
+    column-gap:calc(var(--gap)*2);row-gap:var(--gap);
+    align-content:center;justify-content:center;align-items:start;
+  }
+  .grid-wrap{grid-column:1;grid-row:1 / span 3;align-self:center;justify-self:center}
+  .active-clue{grid-column:2;grid-row:1}
+  .game-controls{grid-column:2;grid-row:2}
+  .virtual-keyboard{grid-column:2;grid-row:3;display:flex}
+  .active-clue,.game-controls,.virtual-keyboard{width:100%}
+  .result-icon,.eyebrow.result-eyebrow{display:none}
+  .answer-list{grid-template-columns:1fr 1fr}
+}
