@@ -84,6 +84,45 @@ npm run build
 
 The build runs puzzle validation automatically. Commit and push to GitHub; Vercel deploys the production branch.
 
+
+## Daily game rotation (crossword → BGM → Hangman)
+
+The game is chosen from the date, never stored per visitor. Starting at `startDate` in `content/puzzles.json` and using the Asia/Kolkata date, the cycle repeats every three days:
+
+| Day in cycle | `gameType` | Example (startDate 2026-10-22) |
+|---|---|---|
+| 1 | `crossword` (default when `gameType` is omitted) | 2026-10-22, 10-25, 10-28 … |
+| 2 | `bgm` – BGM Movie Guess | 2026-10-23, 10-26 … |
+| 3 | `hangman` | 2026-10-24, 10-27 … |
+
+The schedule lives in `src/lib/schedule.js`. An entry whose `gameType` does not match its date's slot, or a date with no entry, shows an unavailable state; no other game is substituted. `npm run validate:puzzles` fails on a mismatch.
+
+### BGM Movie Guess entry
+
+```json
+{ "date": "2026-10-23", "puzzleNumber": 2, "gameType": "bgm",
+  "title": "BGM Movie Guess", "answer": "Magadheera", "audio": "/audio/bgm/2026-10-23.mp3" }
+```
+
+Put your own licensed clip at `public/audio/bgm/<date>.mp3` (served as `/audio/bgm/<date>.mp3`), or set `audio` to an `https://` URL you have rights to use. Allowed: mp3, ogg, oga, wav, m4a, aac, webm. **The `answer` must match the clip you supply.** If the file cannot be loaded the game shows a configuration error naming the expected path, and validation prints a warning for missing local files. No audio is bundled or downloaded by the project.
+
+Answer rule: case, accents, spaces and punctuation are ignored ("dj  tillu" = "DJ Tillu" = "D.J. Tillu"). One box is shown per A–Z letter; digits and punctuation are shown pre-filled.
+
+### Hangman entry
+
+```json
+{ "date": "2026-10-24", "puzzleNumber": 3, "gameType": "hangman",
+  "title": "Hangman", "answer": "Geetha Govindam", "hint": "Vijay Deverakonda and Rashmika Mandanna's romantic hit" }
+```
+
+Five chances = five distinct wrong letters. Correct, repeated and invalid guesses are free. The hint and answer appear only after the fifth wrong letter. Guesses are kept in `localStorage` (`moviematrix.hangman.v1`) so a reload cannot reset the chances.
+
+### Results, analytics and answer exposure
+
+- New results add `gameType` (and `wrongGuesses` for Hangman). Results without `gameType` are crosswords. A leftover record from a different game on the same date does not block today's game.
+- Existing events gain a `game_type` property; `game_started` is new; `crossword_started` still fires for crosswords only. Hangman's `puzzle_submitted` adds an aggregate `wrong_guesses`. No letters or answers are sent.
+- **Answers for BGM and Hangman are shipped in the JavaScript bundle (as the crossword's are) and can be read by anyone who inspects it.** The audio file URL is public as well. Real protection needs server-side checking, e.g. one Vercel serverless function in `api/` that holds the answers (outside `content/`) and returns `{correct}` for a BGM guess or the matching positions for a Hangman letter, plus the hint only after the fifth miss. This was not added because it changes the static-only deployment.
+
 ## Static-only limitations
 
 - Puzzle answers ship to browsers in `content/puzzles.json` and can be inspected.
@@ -97,23 +136,3 @@ The build runs puzzle validation automatically. Commit and push to GitHub; Verce
 Edit only `content/puzzles.json` to publish a daily puzzle. Keep `version: 1` and `timezone: "Asia/Kolkata"`. Each puzzle's `rows` is the authoritative rectangular grid: `.` is an open cell and `#` is a blocked cell. `answers` entries use zero-based `row` and `col`, `direction` (`across` or `down`), uppercase A–Z `answer`, `clue`, and the standard crossword `number` for that starting cell.
 
 Before publishing, run `npm run validate:puzzles`. Validation rejects malformed grids, answers that do not fit their open slots, mismatched intersections, incorrect clue numbering, uncovered open cells, and question lists that have no Across/Down crossing structure. `npm run build` runs this validation before Vite builds. The current bundled October 22 content is a list of isolated Across entries, not a valid crossword, and therefore intentionally fails strict validation until replaced with a genuine intersecting grid.
-
-
-## Private in-app admin dashboard
-
-The private dashboard is available at `/admin`. It uses Vercel serverless functions in `api/admin/` and an HttpOnly, SameSite=Strict, signed session cookie. It does not add admin credentials or privileged PostHog keys to browser bundles. Admin requests are same-origin checked, login attempts have a best-effort per-function-instance limit, and analytics queries are restricted to a maximum 90-day range.
-
-Configure these **server-side Vercel environment variables** in Project Settings → Environment Variables (Production and Preview only if needed):
-
-- `ADMIN_USERNAME`: the admin login name.
-- `ADMIN_PASSWORD`: a long, unique password; rotate it if exposed.
-- `ADMIN_SESSION_SECRET`: at least 32 random characters, used to sign sessions. Generate one with `openssl rand -base64 48`.
-- `POSTHOG_PERSONAL_API_KEY`: a PostHog personal API key with only the `query:read` scope required for querying. Never use a project ingest key here.
-- `POSTHOG_PROJECT_ID`: the numeric PostHog project ID.
-- `POSTHOG_API_HOST`: the PostHog app/API host for your region, e.g. `https://us.posthog.com` or `https://eu.posthog.com` (not the ingest host).
-
-Do **not** prefix any of these values with `VITE_`. Only `VITE_POSTHOG_KEY` (the public project ingest key) and `VITE_POSTHOG_HOST` belong in browser environment settings. Do not commit `.env` or real secrets. Redeploy after adding server-side environment variables. The included `.env.example` contains placeholders only.
-
-The dashboard currently uses the existing events (`game_page_viewed`, `crossword_started`, `puzzle_submitted`, `puzzle_won`, `puzzle_lost`). Until BGM and Hangman event tracking is implemented, their metrics will not appear. New game events should include a `game_type` property (`crossword`, `bgm`, or `hangman`) on start/result events. The user metric is a sum of daily unique anonymous identifiers, not a count of verified people unique across the full range. All metrics reflect only events captured under the existing analytics consent policy.
-
-Security note: the included login rate limit is best-effort and held in serverless function memory; it is not a distributed rate limiter. For a public production admin endpoint, add a durable edge/WAF rate limit or identity provider if the dashboard becomes a higher-risk target. Admin API authentication is server-enforced; the frontend route alone is not treated as security.

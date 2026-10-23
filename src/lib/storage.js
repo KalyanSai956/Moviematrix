@@ -11,7 +11,10 @@ export function readProgress() {
 
 export function saveResult(date, result) {
   const progress = readProgress();
-  if (progress.results[date]) return progress;
+  // One result per date and game. A leftover record from a different game (e.g. saved before the
+  // 3-day rotation existed) must not block today's game, so only a same-game record is kept.
+  const existing = progress.results[date];
+  if (existing && (existing.gameType ?? 'crossword') === (result.gameType ?? 'crossword')) return progress;
   progress.results[date] = { ...result, date };
   try { localStorage.setItem(STORAGE_KEY, JSON.stringify(progress)); } catch { /* private browsing/storage disabled: game still works for this session */ }
   return progress;

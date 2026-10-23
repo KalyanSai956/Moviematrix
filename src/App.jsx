@@ -8,15 +8,29 @@ import {
 } from "lucide-react";
 import puzzleData from "../content/puzzles.json";
 import Crossword from "./features/crossword/Crossword.jsx";
+import BgmGuess from "./features/bgm/BgmGuess.jsx";
+import Hangman from "./features/hangman/Hangman.jsx";
 import Rules from "./components/Rules.jsx";
 import Stats from "./components/Stats.jsx";
 import AnalyticsConsent from "./components/AnalyticsConsent.jsx";
 import { track } from "./lib/analytics.js";
 import { dateKeyInIST, dayNumber, secondsUntilNextPuzzle } from "./lib/date.js";
 import { calculateStats, readProgress, saveResult } from "./lib/storage.js";
+import {
+  GAME_LABELS,
+  GAME_NOUNS,
+  resolveDailyPuzzle,
+  resultGameType,
+} from "./lib/schedule.js";
 
 const INSTAGRAM_URL =
   "https://www.instagram.com/kalyan__since__2004?obrf=MWx4aHl5NjI5bzd0NQ==";
+
+// Crossword keeps its original key so its "rules seen" state is untouched.
+const rulesKeyFor = (kind) =>
+  kind === "crossword"
+    ? "moviematrix.rulesSeen.v1"
+    : `moviematrix.rulesSeen.${kind}.v1`;
 
 function formatCountdown(total) {
   const hours = Math.floor(total / 3600)
@@ -33,10 +47,10 @@ export default function App() {
   const [now, setNow] = useState(() => new Date());
   const today = dateKeyInIST(now);
   const [previousDay, setPreviousDay] = useState(today);
-  const puzzle = useMemo(
-    () => puzzleData.puzzles.find((p) => p.date === today),
-    [today],
-  );
+  // The 3-day rotation (crossword -> BGM -> Hangman) is decided in lib/schedule.js.
+  const daily = useMemo(() => resolveDailyPuzzle(puzzleData, today), [today]);
+  const puzzle = daily.puzzle;
+  const kind = daily.gameType || "crossword";
   const [progress, setProgress] = useState(() => readProgress());
   const [screen, setScreen] = useState("home");
   const [showRules, setShowRules] = useState(false);
@@ -45,7 +59,12 @@ export default function App() {
   const gameStartedAt = useRef(null);
   const [result, setResult] = useState(null);
   const stats = calculateStats(progress, today);
-  const savedResult = progress.results[today];
+  const storedResult = progress.results[today];
+  // Ignore a record that belongs to a different game than today's.
+  const savedResult =
+    storedResult && resultGameType(storedResult) === kind
+      ? storedResult
+      : undefined;
   const puzzleNo =
     puzzle?.puzzleNumber ?? dayNumber(puzzleData.startDate, today);
 
@@ -63,6 +82,7 @@ export default function App() {
       setPreviousDay(today);
       setScreen("home");
       setResult(null);
+      setShowRules(false); // rules are per-game; don't carry yesterday's modal into today's game
     }
   }, [today, previousDay]);
 
@@ -74,14 +94,22 @@ export default function App() {
       track("countdown_completed", {
         puzzle_date: today,
         puzzle_number: puzzleNo,
+        game_type: kind,
       });
-      track("crossword_started", {
+      if (kind === "crossword") {
+        track("crossword_started", {
+          puzzle_date: today,
+          puzzle_number: puzzleNo,
+        });
+      }
+      track("game_started", {
         puzzle_date: today,
         puzzle_number: puzzleNo,
+        game_type: kind,
       });
       let seen = false;
       try {
-        seen = Boolean(localStorage.getItem("moviematrix.rulesSeen.v1"));
+        seen = Boolean(localStorage.getItem(rulesKeyFor(kind)));
       } catch {
         /* rules can still be shown */
       }
@@ -91,16 +119,21 @@ export default function App() {
           puzzle_date: today,
           puzzle_number: puzzleNo,
           placement: "first_visit",
+          game_type: kind,
         });
       }
       return undefined;
     }
     const timer = window.setTimeout(() => setCountdown((n) => n - 1), 1000);
     return () => window.clearTimeout(timer);
-  }, [screen, countdown, today, puzzleNo]);
+  }, [screen, countdown, today, puzzleNo, kind]);
 
   function play() {
-    track("play_clicked", { puzzle_date: today, puzzle_number: puzzleNo });
+    track("play_clicked", {
+      puzzle_date: today,
+      puzzle_number: puzzleNo,
+      game_type: kind,
+    });
     if (!puzzle) {
       setScreen("unavailable");
       return;
@@ -117,7 +150,7 @@ export default function App() {
   function closeRules() {
     setShowRules(false);
     try {
-      localStorage.setItem("moviematrix.rulesSeen.v1", "1");
+      localStorage.setItem(rulesKeyFor(kind), "1");
     } catch {
       /* optional */
     }
@@ -134,7 +167,12 @@ export default function App() {
       correct_answers: gameResult.score,
       total_answers: gameResult.total,
       duration_seconds: durationSeconds,
+      game_type: kind,
     };
+    // Aggregate count only: never the typed letters or the answer.
+    if (typeof gameResult.wrongGuesses === "number") {
+      eventProperties.wrong_guesses = gameResult.wrongGuesses;
+    }
     track("puzzle_submitted", eventProperties);
     track(gameResult.won ? "puzzle_won" : "puzzle_lost", {
       ...eventProperties,
@@ -143,18 +181,24 @@ export default function App() {
     const next = saveResult(today, completed);
     setProgress(next);
     setResult(next.results[today]);
-    setScreen("result");
+    // BGM and Hangman stay on screen so the player sees the answer/hint, then
+    // press "See results" (their onContinue). The result is already saved.
+    if (kind === "crossword") setScreen("result");
   }
 
   function share() {
     const won = Boolean(result?.won);
-    const score = `${result?.score ?? 0}/${result?.total ?? puzzle?.answers.length ?? 0}`;
+    const score = `${result?.score ?? 0}/${result?.total ?? puzzle?.answers?.length ?? 0}`;
     track("whatsapp_share_clicked", {
       puzzle_date: today,
       puzzle_number: puzzleNo,
       outcome: won ? "won" : "lost",
+      game_type: kind,
     });
-    const message = `MovieMatrix #${puzzleNo} 🎬\n${won ? `I solved today's Tollywood Crossword: ${score}!` : `I scored ${score} on today's Tollywood Crossword.`}\nCan you beat my score? ${window.location.origin}`;
+    const message =
+      kind === "crossword"
+        ? `MovieMatrix #${puzzleNo} 🎬\n${won ? `I solved today's Tollywood Crossword: ${score}!` : `I scored ${score} on today's Tollywood Crossword.`}\nCan you beat my score? ${window.location.origin}`
+        : `MovieMatrix #${puzzleNo} 🎬\n${won ? `I cracked today's ${GAME_LABELS[kind]}!` : `Today's ${GAME_LABELS[kind]} beat me.`}\nCan you beat me? ${window.location.origin}`;
     window.open(
       `https://wa.me/?text=${encodeURIComponent(message)}`,
       "_blank",
@@ -198,7 +242,7 @@ export default function App() {
                 ? "Get your movie brain ready."
                 : "Let the game begin."}
             </h2>
-            <p className="muted">Your daily crossword is loading…</p>
+            <p className="muted">{`Your daily ${GAME_NOUNS[kind]} is loading…`}</p>
             <div className="loading-track">
               <span style={{ width: `${((5 - countdown) / 5) * 100}%` }} />
             </div>
@@ -209,17 +253,38 @@ export default function App() {
             <div className="section-heading">
               <div>
                 <p className="eyebrow">TODAY'S CHALLENGE · #{puzzleNo}</p>
-                <h1>{puzzle.title || "Tollywood Crossword"}</h1>
+                <h1>{puzzle.title || GAME_LABELS[kind]}</h1>
                 <p className="muted">
-                  {puzzle.subtitle || "Cross the clues. Complete the grid."}
+                  {puzzle.subtitle ||
+                    (kind === "crossword"
+                      ? "Cross the clues. Complete the grid."
+                      : GAME_LABELS[kind])}
                 </p>
               </div>
             </div>
-            <Crossword
-              key={puzzle.date}
-              puzzle={puzzle}
-              onSubmit={finishGame}
-            />
+            {kind === "crossword" && (
+              <Crossword
+                key={puzzle.date}
+                puzzle={puzzle}
+                onSubmit={finishGame}
+              />
+            )}
+            {kind === "bgm" && (
+              <BgmGuess
+                key={puzzle.date}
+                puzzle={puzzle}
+                onSubmit={finishGame}
+                onContinue={() => setScreen("result")}
+              />
+            )}
+            {kind === "hangman" && (
+              <Hangman
+                key={puzzle.date}
+                puzzle={puzzle}
+                onSubmit={finishGame}
+                onContinue={() => setScreen("result")}
+              />
+            )}
           </section>
         )}
         {screen === "result" && (
@@ -242,7 +307,7 @@ export default function App() {
                   /
                   {result?.total ??
                     savedResult?.total ??
-                    puzzle?.answers.length ??
+                    puzzle?.answers?.length ??
                     0}
                 </i>
               </strong>
@@ -269,7 +334,7 @@ export default function App() {
                 <span className="eyebrow">NEXT CHALLENGE IN</span>
                 <strong>{formatCountdown(remaining)}</strong>
               </div>
-              <p>One new crossword, every day at midnight IST.</p>
+              <p>One new puzzle, every day at midnight IST.</p>
             </div>
             <a
               className="instagram-result-link"
@@ -296,20 +361,30 @@ export default function App() {
             <h1>Today's answers</h1>
             <p className="muted">Come back tomorrow for a fresh challenge.</p>
             <div className="answer-list">
-              {puzzle.answers.map((entry) => (
-                <div
-                  className="answer-row"
-                  key={`${entry.number}-${entry.direction}`}
-                >
-                  <span>
-                    {entry.number} {entry.direction.toUpperCase()}
-                  </span>
+              {kind !== "crossword" ? (
+                <div className="answer-row">
+                  <span>{kind === "bgm" ? "MOVIE" : "TITLE"}</span>
                   <div>
-                    <strong>{entry.answer}</strong>
-                    <p>{entry.clue}</p>
+                    <strong>{puzzle.answer.toUpperCase()}</strong>
+                    {kind === "hangman" && <p>{puzzle.hint}</p>}
                   </div>
                 </div>
-              ))}
+              ) : (
+                puzzle.answers.map((entry) => (
+                  <div
+                    className="answer-row"
+                    key={`${entry.number}-${entry.direction}`}
+                  >
+                    <span>
+                      {entry.number} {entry.direction.toUpperCase()}
+                    </span>
+                    <div>
+                      <strong>{entry.answer}</strong>
+                      <p>{entry.clue}</p>
+                    </div>
+                  </div>
+                ))
+              )}
             </div>
             <button
               className="primary-button"
@@ -324,12 +399,24 @@ export default function App() {
             <div className="loader-emblem">
               <Clapperboard size={32} />
             </div>
-            <p className="eyebrow">COMING SOON</p>
-            <h1>Today's puzzle is being prepared.</h1>
-            <p className="muted">
-              The puzzle schedule doesn't have an entry for {today} yet. Check
-              back soon.
-            </p>
+            {daily.status === "invalid" ? (
+              <>
+                <p className="eyebrow">PUZZLE UNAVAILABLE</p>
+                <h1>Today's puzzle can't be shown.</h1>
+                <p className="muted" role="alert">
+                  {daily.error}
+                </p>
+              </>
+            ) : (
+              <>
+                <p className="eyebrow">COMING SOON</p>
+                <h1>Today's puzzle is being prepared.</h1>
+                <p className="muted">
+                  The puzzle schedule doesn't have an entry for {today} yet.
+                  Check back soon.
+                </p>
+              </>
+            )}
             <button
               className="secondary-button"
               onClick={() => setScreen("home")}
@@ -339,7 +426,7 @@ export default function App() {
           </section>
         )}
       </main>
-      {showRules && <Rules onClose={closeRules} />}
+      {showRules && <Rules onClose={closeRules} gameType={kind} />}
     </div>
   );
 }

@@ -115,211 +115,20 @@
     {
       "date": "2026-10-23",
       "puzzleNumber": 2,
-      "title": "Tollywood Crossword",
-      "subtitle": "10 easy clues. One interconnected grid.",
-      "rows": [
-        "#.##########.#",
-        "#.###.#.......",
-        "#.#.#.######.#",
-        "..............",
-        "#.#.#.######.#",
-        "#.##......##.#",
-        "#####.######.#",
-        "#.........##.#",
-        "#####.####...#",
-        "##......####.#"
-      ],
-      "answers": [
-        {
-          "number": 1,
-          "direction": "down",
-          "row": 0,
-          "col": 1,
-          "answer": "MAHESH",
-          "clue": "First name of the superstar who acted in Pokiri and Srimanthudu (6)"
-        },
-        {
-          "number": 2,
-          "direction": "down",
-          "row": 0,
-          "col": 12,
-          "answer": "MAGADHEERA",
-          "clue": "Ram Charan's reincarnation action film directed by Rajamouli (10)"
-        },
-        {
-          "number": 3,
-          "direction": "down",
-          "row": 1,
-          "col": 5,
-          "answer": "BAAHUBALI",
-          "clue": "Epic film series starring Prabhas, directed by Rajamouli (9)"
-        },
-        {
-          "number": 4,
-          "direction": "across",
-          "row": 1,
-          "col": 7,
-          "answer": "PRABHAS",
-          "clue": "Baahubali star who played the lead role in Salaar (7)"
-        },
-        {
-          "number": 5,
-          "direction": "down",
-          "row": 2,
-          "col": 3,
-          "answer": "NTR",
-          "clue": "Short name commonly used for Jr Nandamuri Taraka Rama Rao (3)"
-        },
-        {
-          "number": 6,
-          "direction": "across",
-          "row": 3,
-          "col": 0,
-          "answer": "GEETHAGOVINDAM",
-          "clue": "Vijay Deverakonda and Rashmika Mandanna's romantic hit (14)"
-        },
-        {
-          "number": 7,
-          "direction": "across",
-          "row": 5,
-          "col": 4,
-          "answer": "PUSHPA",
-          "clue": "Allu Arjun's hit film about a red-sanders smuggler (6)"
-        },
-        {
-          "number": 8,
-          "direction": "across",
-          "row": 7,
-          "col": 1,
-          "answer": "ALLUARJUN",
-          "clue": "Actor who played Pushpa Raj and is known for his signature dance moves (9)"
-        },
-        {
-          "number": 9,
-          "direction": "across",
-          "row": 8,
-          "col": 10,
-          "answer": "RRR",
-          "clue": "Rajamouli's movie starring Ram Charan and Jr NTR (3)"
-        },
-        {
-          "number": 10,
-          "direction": "across",
-          "row": 9,
-          "col": 2,
-          "answer": "POKIRI",
-          "clue": "Mahesh Babu's blockbuster with the famous dialogue 'Okkasari commit ayithe...' (6)"
-        }
-      ]
+      "gameType": "bgm",
+      "title": "BGM Movie Guess",
+      "subtitle": "Listen to the background music and name the movie.",
+      "answer": "Jailer",
+      "audio": "/audio/bgm/mathew_ringtone_jailar.mp3"
     },
     {
       "date": "2026-10-24",
       "puzzleNumber": 3,
-      "title": "Tollywood Crossword",
-      "subtitle": "10 tough clues. One interconnected grid.",
-      "rows": [
-        "############.#",
-        "##########.#.#",
-        "##.........#.#",
-        "##########.#.#",
-        "##########.#.#",
-        "##########.#.#",
-        "##########.#.#",
-        "#####.####.#.#",
-        "###........#.#",
-        ".####.######.#",
-        ".####.####.#.#",
-        ".###..........",
-        ".####.####.###",
-        "......####.###",
-        ".####.#....###",
-        ".####.####.###",
-        ".####.####.###",
-        ".####.####.###",
-        ".####.####.###"
-      ],
-      "answers": [
-        {
-          "number": 1,
-          "direction": "down",
-          "row": 0,
-          "col": 12,
-          "answer": "RANGASTHALAM",
-          "clue": "1985-set village drama in which a hearing-impaired motor-man takes on a corrupt president (12)"
-        },
-        {
-          "number": 2,
-          "direction": "down",
-          "row": 1,
-          "col": 10,
-          "answer": "KATTAPPA",
-          "clue": "Sathyaraj's loyal slave-warrior in?(8)"
-        },
-        {
-          "number": 3,
-          "direction": "across",
-          "row": 2,
-          "col": 2,
-          "answer": "ANNAPURNA",
-          "clue": "Hyderabad studios founded by A. Nageswara Rao (9)"
-        },
-        {
-          "number": 4,
-          "direction": "down",
-          "row": 7,
-          "col": 5,
-          "answer": "VIKRAMARKUDU",
-          "clue": "Ravi Teja plays a cop and his thief lookalike in 2006(12)"
-        },
-        {
-          "number": 5,
-          "direction": "across",
-          "row": 8,
-          "col": 3,
-          "answer": "CHIRUTHA",
-          "clue": "Ram Charan's 2007 debut directed by Puri Jagannadh (8)"
-        },
-        {
-          "number": 6,
-          "direction": "down",
-          "row": 9,
-          "col": 0,
-          "answer": "MAHISHMATI",
-          "clue": "Kingdom ruled by Bhallaladeva in Baahubali (10)"
-        },
-        {
-          "number": 7,
-          "direction": "down",
-          "row": 10,
-          "col": 10,
-          "answer": "NANDAMURI",
-          "clue": "Dynasty surname of N. T. Rama Rao (9)"
-        },
-        {
-          "number": 8,
-          "direction": "across",
-          "row": 11,
-          "col": 4,
-          "answer": "MANISHARMA",
-          "clue": "'Melody Brahma' who scored the songs of Okkadu (10)"
-        },
-        {
-          "number": 9,
-          "direction": "across",
-          "row": 13,
-          "col": 0,
-          "answer": "SIMMBA",
-          "clue": "Ranveer Singh's 2018 Hindi remake of NTR Jr.'s Temper (6)"
-        },
-        {
-          "number": 10,
-          "direction": "across",
-          "row": 14,
-          "col": 7,
-          "answer": "SIVA",
-          "clue": "Nagarjuna's 1989 campus-gangster film that launched Ram Gopal Varma (spelled with an S) (4)"
-        }
-      ]
+      "gameType": "hangman",
+      "title": "Hangman",
+      "subtitle": "Reveal the movie title one letter at a time.",
+      "answer": "Geetha Govindam",
+      "hint": "Vijay Deverakonda and Rashmika Mandanna's romantic hit"
     },
     {
       "date": "2026-10-25",
@@ -431,8 +240,217 @@
       ]
     },
     {
-      "date": "2026-10-26",
-      "puzzleNumber": 5,
+      "date": "2026-10-28",
+      "puzzleNumber": 7,
+      "title": "Tollywood Crossword",
+      "subtitle": "10 easy clues. One interconnected grid.",
+      "rows": [
+        "#.##########.#",
+        "#.###.#.......",
+        "#.#.#.######.#",
+        "..............",
+        "#.#.#.######.#",
+        "#.##......##.#",
+        "#####.######.#",
+        "#.........##.#",
+        "#####.####...#",
+        "##......####.#"
+      ],
+      "answers": [
+        {
+          "number": 1,
+          "direction": "down",
+          "row": 0,
+          "col": 1,
+          "answer": "MAHESH",
+          "clue": "First name of the superstar who acted in Pokiri and Srimanthudu (6)"
+        },
+        {
+          "number": 2,
+          "direction": "down",
+          "row": 0,
+          "col": 12,
+          "answer": "MAGADHEERA",
+          "clue": "Ram Charan's reincarnation action film directed by Rajamouli (10)"
+        },
+        {
+          "number": 3,
+          "direction": "down",
+          "row": 1,
+          "col": 5,
+          "answer": "BAAHUBALI",
+          "clue": "Epic film series starring Prabhas, directed by Rajamouli (9)"
+        },
+        {
+          "number": 4,
+          "direction": "across",
+          "row": 1,
+          "col": 7,
+          "answer": "PRABHAS",
+          "clue": "Baahubali star who played the lead role in Salaar (7)"
+        },
+        {
+          "number": 5,
+          "direction": "down",
+          "row": 2,
+          "col": 3,
+          "answer": "NTR",
+          "clue": "Short name commonly used for Jr Nandamuri Taraka Rama Rao (3)"
+        },
+        {
+          "number": 6,
+          "direction": "across",
+          "row": 3,
+          "col": 0,
+          "answer": "GEETHAGOVINDAM",
+          "clue": "Vijay Deverakonda and Rashmika Mandanna's romantic hit (14)"
+        },
+        {
+          "number": 7,
+          "direction": "across",
+          "row": 5,
+          "col": 4,
+          "answer": "PUSHPA",
+          "clue": "Allu Arjun's hit film about a red-sanders smuggler (6)"
+        },
+        {
+          "number": 8,
+          "direction": "across",
+          "row": 7,
+          "col": 1,
+          "answer": "ALLUARJUN",
+          "clue": "Actor who played Pushpa Raj and is known for his signature dance moves (9)"
+        },
+        {
+          "number": 9,
+          "direction": "across",
+          "row": 8,
+          "col": 10,
+          "answer": "RRR",
+          "clue": "Rajamouli's movie starring Ram Charan and Jr NTR (3)"
+        },
+        {
+          "number": 10,
+          "direction": "across",
+          "row": 9,
+          "col": 2,
+          "answer": "POKIRI",
+          "clue": "Mahesh Babu's blockbuster with the famous dialogue 'Okkasari commit ayithe...' (6)"
+        }
+      ]
+    },
+    {
+      "date": "2026-10-31",
+      "puzzleNumber": 10,
+      "title": "Tollywood Crossword",
+      "subtitle": "10 tough clues. One interconnected grid.",
+      "rows": [
+        "############.#",
+        "##########.#.#",
+        "##.........#.#",
+        "##########.#.#",
+        "##########.#.#",
+        "##########.#.#",
+        "##########.#.#",
+        "#####.####.#.#",
+        "###........#.#",
+        ".####.######.#",
+        ".####.####.#.#",
+        ".###..........",
+        ".####.####.###",
+        "......####.###",
+        ".####.#....###",
+        ".####.####.###",
+        ".####.####.###",
+        ".####.####.###",
+        ".####.####.###"
+      ],
+      "answers": [
+        {
+          "number": 1,
+          "direction": "down",
+          "row": 0,
+          "col": 12,
+          "answer": "RANGASTHALAM",
+          "clue": "1985-set village drama in which a hearing-impaired motor-man takes on a corrupt president (12)"
+        },
+        {
+          "number": 2,
+          "direction": "down",
+          "row": 1,
+          "col": 10,
+          "answer": "KATTAPPA",
+          "clue": "Sathyaraj's loyal slave-warrior in?(8)"
+        },
+        {
+          "number": 3,
+          "direction": "across",
+          "row": 2,
+          "col": 2,
+          "answer": "ANNAPURNA",
+          "clue": "Hyderabad studios founded by A. Nageswara Rao (9)"
+        },
+        {
+          "number": 4,
+          "direction": "down",
+          "row": 7,
+          "col": 5,
+          "answer": "VIKRAMARKUDU",
+          "clue": "Ravi Teja plays a cop and his thief lookalike in 2006(12)"
+        },
+        {
+          "number": 5,
+          "direction": "across",
+          "row": 8,
+          "col": 3,
+          "answer": "CHIRUTHA",
+          "clue": "Ram Charan's 2007 debut directed by Puri Jagannadh (8)"
+        },
+        {
+          "number": 6,
+          "direction": "down",
+          "row": 9,
+          "col": 0,
+          "answer": "MAHISHMATI",
+          "clue": "Kingdom ruled by Bhallaladeva in Baahubali (10)"
+        },
+        {
+          "number": 7,
+          "direction": "down",
+          "row": 10,
+          "col": 10,
+          "answer": "NANDAMURI",
+          "clue": "Dynasty surname of N. T. Rama Rao (9)"
+        },
+        {
+          "number": 8,
+          "direction": "across",
+          "row": 11,
+          "col": 4,
+          "answer": "MANISHARMA",
+          "clue": "'Melody Brahma' who scored the songs of Okkadu (10)"
+        },
+        {
+          "number": 9,
+          "direction": "across",
+          "row": 13,
+          "col": 0,
+          "answer": "SIMMBA",
+          "clue": "Ranveer Singh's 2018 Hindi remake of NTR Jr.'s Temper (6)"
+        },
+        {
+          "number": 10,
+          "direction": "across",
+          "row": 14,
+          "col": 7,
+          "answer": "SIVA",
+          "clue": "Nagarjuna's 1989 campus-gangster film that launched Ram Gopal Varma (spelled with an S) (4)"
+        }
+      ]
+    },
+    {
+      "date": "2026-11-03",
+      "puzzleNumber": 13,
       "title": "Tollywood Crossword",
       "subtitle": "10 tough clues. One interconnected grid.",
       "rows": [
@@ -540,8 +558,8 @@
       ]
     },
     {
-      "date": "2026-10-27",
-      "puzzleNumber": 6,
+      "date": "2026-11-06",
+      "puzzleNumber": 16,
       "title": "Tollywood Crossword",
       "subtitle": "10 tough clues. One interconnected grid.",
       "rows": [

@@ -1,0 +1,83 @@
+/* games.css — BGM Movie Guess + Hangman. Imported after fit-screen.css.
+   Reuses the existing palette variables and the crossword's keyboard / button
+   classes; nothing here targets crossword classes. */
+
+.mm-game{
+  flex:1;width:min(100%,560px);min-height:0;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(8px,1.8dvh,16px);
+  overflow-y:auto;overflow-x:hidden;scrollbar-width:none;text-align:center;
+}
+.mm-game::-webkit-scrollbar{display:none}
+.mm-game>*{flex:none}
+.mm-game .game-controls{width:100%;max-width:360px;height:var(--ctrl-h);margin:0}
+.mm-game .virtual-keyboard{width:100%;max-width:440px;margin:0}
+
+.mm-instructions{margin:0;max-width:440px;font-size:12px;line-height:1.5;color:var(--muted)}
+
+/* ---------- audio player ---------- */
+.mm-player{
+  width:100%;max-width:440px;display:flex;align-items:center;gap:12px;padding:10px 14px;
+  border:1px solid #343d60;border-radius:14px;background:#171e38;
+}
+.mm-play{
+  flex:none;width:46px;height:46px;border:0;border-radius:50%;display:grid;place-items:center;
+  background:var(--violet);color:#10142b;box-shadow:0 8px 30px #7d8bff21;
+}
+.mm-play:hover{background:#a8b2ff}
+.mm-player-info{flex:1;min-width:0;display:flex;flex-direction:column;gap:8px;text-align:left}
+.mm-player-info span{display:flex;align-items:center;gap:6px;font:10px 'DM Mono',monospace;letter-spacing:1px;color:#b9c1e2}
+.mm-progress{height:4px;border-radius:99px;background:#2a3150;overflow:hidden}
+.mm-progress i{display:block;height:100%;background:var(--gold);transition:width .25s linear}
+.mm-time{flex:none;font:10px 'DM Mono',monospace;color:#9ba4c2;white-space:nowrap}
+
+/* ---------- title boxes (both games) ---------- */
+.mm-board{
+  container-type:inline-size;width:100%;display:flex;flex-wrap:wrap;justify-content:center;gap:10px 18px;
+}
+.mm-word{display:flex;gap:4px}
+.mm-box{
+  --bs:clamp(18px,calc((100cqw - (var(--n,10) - 1) * 4px) / var(--n,10)),40px);
+  width:var(--bs);height:calc(var(--bs)*1.2);padding:0;
+  display:grid;place-items:center;line-height:1;
+  border:1px solid #384365;border-radius:4px;background:#202a4e;color:#fff;
+  font:700 calc(var(--bs)*.55) 'DM Mono',monospace;
+  -webkit-user-select:none;user-select:none;
+}
+button.mm-box.active{border:2px solid var(--gold);background:#39436e}
+.mm-box.fixed{border-color:transparent;background:transparent;color:#aab5df}
+.mm-box.hidden{background:#161c36;border-color:#2f3858}
+.mm-box.revealed{background:#29345f;border-color:#4d5a8c}
+.mm-box.missed,.mm-box.wrong{color:#ffaaa9;background:#4a263a;border-color:#6b3a50}
+.mm-box.right{color:#bff3dc;background:#16363a;border-color:#376e68}
+button.mm-box:disabled{opacity:1;cursor:default}
+
+/* ---------- status / feedback ---------- */
+.mm-status{min-height:1.4em;margin:0;font-size:12px;line-height:1.4;color:#ffd08a}
+.mm-status.good{color:var(--green)}
+.mm-status.bad{color:#ffaaa9}
+.mm-error{
+  width:100%;max-width:440px;padding:16px;border:1px solid #5b4c2c;border-radius:12px;background:#292316;
+  display:flex;flex-direction:column;align-items:center;gap:10px;
+}
+.mm-error p{margin:0;font-size:12px;line-height:1.55;color:#ffd08a;word-break:break-word}
+.mm-error strong{font-size:14px;color:#ffe3b4}
+
+/* ---------- hangman ---------- */
+.mm-chances{display:flex;align-items:center;justify-content:center;gap:10px;font:10px 'DM Mono',monospace;letter-spacing:1px;color:var(--muted)}
+.mm-chances b{font:600 22px 'DM Mono',monospace;color:#f3f4fb;letter-spacing:0}
+.mm-pips{display:flex;gap:5px}
+.mm-pips i{width:9px;height:9px;border-radius:50%;background:var(--green);transition:background .2s}
+.mm-pips i.spent{background:#4a263a;box-shadow:inset 0 0 0 1px #8a4a5e}
+.mm-wrong{margin:0;font-size:12px;color:#9ba4c2;min-height:1.4em}
+.mm-wrong b{color:#ffaaa9;letter-spacing:.2em}
+.mm-hint{
+  width:100%;max-width:440px;padding:10px 14px;border-radius:12px;background:#8493ff;color:#0d1230;
+  display:flex;flex-direction:column;gap:4px;text-align:center;
+}
+.mm-hint span{font:10px 'DM Mono',monospace;letter-spacing:1px}
+.mm-hint strong{font-size:14px;line-height:1.4}
+.virtual-keyboard button.key-hit{background:#1c3f43;border-color:#376e68;color:#bff3dc}
+.virtual-keyboard button.key-miss{background:#2c1b2b;border-color:#4a263a;color:#ffaaa9}
+
+@media (max-height:700px){ .mm-player{padding:7px 12px} .mm-play{width:40px;height:40px} .mm-instructions{font-size:11px} }
+@media (max-height:600px){ .mm-instructions{display:none} }
