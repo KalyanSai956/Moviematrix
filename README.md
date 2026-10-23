@@ -97,3 +97,23 @@ The build runs puzzle validation automatically. Commit and push to GitHub; Verce
 Edit only `content/puzzles.json` to publish a daily puzzle. Keep `version: 1` and `timezone: "Asia/Kolkata"`. Each puzzle's `rows` is the authoritative rectangular grid: `.` is an open cell and `#` is a blocked cell. `answers` entries use zero-based `row` and `col`, `direction` (`across` or `down`), uppercase A–Z `answer`, `clue`, and the standard crossword `number` for that starting cell.
 
 Before publishing, run `npm run validate:puzzles`. Validation rejects malformed grids, answers that do not fit their open slots, mismatched intersections, incorrect clue numbering, uncovered open cells, and question lists that have no Across/Down crossing structure. `npm run build` runs this validation before Vite builds. The current bundled October 22 content is a list of isolated Across entries, not a valid crossword, and therefore intentionally fails strict validation until replaced with a genuine intersecting grid.
+
+
+## Private in-app admin dashboard
+
+The private dashboard is available at `/admin`. It uses Vercel serverless functions in `api/admin/` and an HttpOnly, SameSite=Strict, signed session cookie. It does not add admin credentials or privileged PostHog keys to browser bundles. Admin requests are same-origin checked, login attempts have a best-effort per-function-instance limit, and analytics queries are restricted to a maximum 90-day range.
+
+Configure these **server-side Vercel environment variables** in Project Settings → Environment Variables (Production and Preview only if needed):
+
+- `ADMIN_USERNAME`: the admin login name.
+- `ADMIN_PASSWORD`: a long, unique password; rotate it if exposed.
+- `ADMIN_SESSION_SECRET`: at least 32 random characters, used to sign sessions. Generate one with `openssl rand -base64 48`.
+- `POSTHOG_PERSONAL_API_KEY`: a PostHog personal API key with only the `query:read` scope required for querying. Never use a project ingest key here.
+- `POSTHOG_PROJECT_ID`: the numeric PostHog project ID.
+- `POSTHOG_API_HOST`: the PostHog app/API host for your region, e.g. `https://us.posthog.com` or `https://eu.posthog.com` (not the ingest host).
+
+Do **not** prefix any of these values with `VITE_`. Only `VITE_POSTHOG_KEY` (the public project ingest key) and `VITE_POSTHOG_HOST` belong in browser environment settings. Do not commit `.env` or real secrets. Redeploy after adding server-side environment variables. The included `.env.example` contains placeholders only.
+
+The dashboard currently uses the existing events (`game_page_viewed`, `crossword_started`, `puzzle_submitted`, `puzzle_won`, `puzzle_lost`). Until BGM and Hangman event tracking is implemented, their metrics will not appear. New game events should include a `game_type` property (`crossword`, `bgm`, or `hangman`) on start/result events. The user metric is a sum of daily unique anonymous identifiers, not a count of verified people unique across the full range. All metrics reflect only events captured under the existing analytics consent policy.
+
+Security note: the included login rate limit is best-effort and held in serverless function memory; it is not a distributed rate limiter. For a public production admin endpoint, add a durable edge/WAF rate limit or identity provider if the dashboard becomes a higher-risk target. Admin API authentication is server-enforced; the frontend route alone is not treated as security.
